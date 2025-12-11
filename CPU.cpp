@@ -11,6 +11,31 @@ using namespace std;
  - Fetch/Decode/Execute/Memory/Writeback
  - Loads machine code (vector<uint32_t>) into memory at address 0 (big-endian words in loader)
  - Prints cycle-by-cycle traces
+ Project: Mini CPU & Instruction Set Simulator — C++ + Python Assembler
+
+Objective: Build a simplified MIPS-like CPU simulator and assembler that can encode, load, and execute small programs. Provide cycle-by-cycle execution trace and documentation.
+
+Implemented features
+
+Instruction set: ADD (R), SUB (R), ADDI (I), LW (I), SW (I), BEQ (I).
+
+Instruction format: R-type: opcode(6)|rs(5)|rt(5)|rd(5)|shamt(5)|funct(6); I-type: opcode(6)|rs(5)|rt(5)|imm(16).
+
+Simulator:
+
+4 KB byte-addressable RAM
+
+32 registers (regs[0] hardwired to zero)
+
+Program Counter (PC) is byte-addressed and increments by 4 on fetch
+
+Fetch → Decode → Execute → Memory → Write-back per cycle (sequential, not pipelined)
+
+Loads instruction words as big-endian bytes (so hex words map directly). Data LW/SW use little-endian word reads/writes for natural integer storage (documented in code). This choice is modular and can be changed if desired.
+
+Branch semantics follow MIPS: branch target = PC_after_increment + (signext(imm) << 2).
+
+Trace output: Per cycle print of PC, IR, mnemonic, memory writes/reads, register write-backs, and a small memory window.
 */
 
 static const int MEMORY_SIZE = 4096; // 4 KB
